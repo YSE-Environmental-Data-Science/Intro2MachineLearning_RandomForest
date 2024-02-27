@@ -32,7 +32,7 @@ set.seed(111) # set the randomnumber generator
 #create ID column
 fluxnet$id <- 1:nrow(fluxnet)
 
-#use 70% of dataset as training set and 30% as test set 
+#use 80% of dataset as training set and 30% as test set 
 train <- fluxnet %>% dplyr::sample_frac(0.80)
 test  <- dplyr::anti_join(fluxnet, train, by = 'id')
 ```
