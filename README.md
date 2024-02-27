@@ -103,3 +103,8 @@ The current model includes only climate variables from the tower. Use either a f
 The forward selection approach starts with no variables and adds each new variable incrementally, testing for statistical significance, while the backward elimination method begins with a full model and then removes the least statistically significant variables one at a time.
 
 Save your final model and datasets in a .Rdata object for next class where we will perform sensitivity analyses on the models. 
+
+
+```{r, include=T}
+save( FCH4_F_gC.rf , file="FinalModel.RDATA")
+```
