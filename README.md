@@ -16,27 +16,32 @@ Boosted regression trees (BRT) represent a versatile machine learning technique 
 
 Read in the data:
 ```{r, include=T}
-load('RANDOMFOREST_DATASET.RDATA' )
+load('data/RANDOMFOREST_DATASET.RDATA' )
 
 ```
 
-Our ultimate interest is in predicting monthly methane fluxes using both dynamic and static attribute of ecosystems. Before we start modeling with the data, it is a good practice to first visualize the variables. The ggpairs() function from the GGally package is a useful tool that visualizes the distribution and correlation between variables:
+Our ultimate interest is in predicting monthly methane fluxes using both dynamic and static attributes of ecosystems. Before we start modeling with the data, it is good practice to first visualize the variables. The ggpairs() function from the GGally package is a useful tool that visualizes the distribution and correlation between variables:
 
 ```{r, include=T}
 ggpairs(fluxnet, columns = c(3:7, 12:13))
 ```
 Next we need to divide the data into testing (20%) and training (80%) sets in a reproducible way:
+
 ```{r, include=T}
 set.seed(111) # set the randomnumber generator
 
 #create ID column
 fluxnet$id <- 1:nrow(fluxnet)
+fluxnet$id 
 
 #use 80% of dataset as training set and 30% as test set 
 train <- fluxnet %>% dplyr::sample_frac(0.80)
+train
+
 test  <- dplyr::anti_join(fluxnet, train, by = 'id')
+test
 ```
-We will use the randomForest() function to predict monthly natural methane efflux using several variables in the dataset. A few other key statements to use in the randomForest() function are:
+We will use the randomForest() function to predict monthly natural methane fluxes using several variables in the dataset. A few other key statements to use in the randomForest() function are:
 
 1. keep.forest = T: This will save the random forest output, which will be helpful in summarizing the results.
 2. importance = TRUE: This will assess the importance of each of the predictors, essential output in random forests.
@@ -46,6 +51,7 @@ We will use the randomForest() function to predict monthly natural methane efflu
 Our response variable in the random forests model is FCH4_F_gC and predictors are P_F, TA_F, VPD_F, IGBP, NDVI, and EVI. We will only explore a few of these variables below:
 
 ```{r, include=T}
+
 FCH4_F_gC.rf <- randomForest(FCH4_F_gC ~ P_F + TA_F + VPD_F ,
                         data = train,
                         keep.forest = T,
@@ -77,6 +83,7 @@ Another aspect of model evaluation is comparing predictions. Although random for
 
 ```{r, include=T}
   train$PRED.TPVPD <- predict(FCH4_F_gC.rf, train)
+  train$PRED.TPVPD
 ```
 Compare the observed (FCH4_F_gC) versus predicted (PRED.TPVPD):
 
@@ -104,7 +111,8 @@ The forward selection approach starts with no variables and adds each new variab
 
 Save your final model and datasets in a .Rdata object for next class where we will perform sensitivity analyses on the models. 
 
-
 ```{r, include=T}
-save( FCH4_F_gC.rf , file="FinalModel.RDATA")
+
+save( FCH4_F_gC.rf, train, test, file="data/YOURNAME_RFModel.RDATA")
+
 ```

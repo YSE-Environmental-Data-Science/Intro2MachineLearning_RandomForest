@@ -6,3 +6,8 @@ BuildDataset.R
 ENV720-MOD13A3-061-results.csv
 RANDOMFOREST_DATASET.RDATA
 Intro2MachineLearning_RandomForest.Rproj
+FinalModel.RDATA
+CodePrep.R
+.DS_Store
+final_model.RDATA
+data
